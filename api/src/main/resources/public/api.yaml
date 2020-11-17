@@ -1,27 +1,76 @@
 openapi: 3.0.1
+
 info:
   title: Car Hire API
   version: 0.1.0
   contact:
-    name: Your name here
+    name: Mariana Valentina Mitroi
   description: Car Hire API
+
 servers:
   - url: http://localhost:{port}
     description: local environment
     variables:
       port:
         default: '8080'
+
 tags:
-  - name: sample
-    description: Sample resource endpoint
+  - name: car hire
+    description: App usefull for my hollyday :)
+
 paths:
-  /sample:
+  #get all users
+  /user:
+
+    #add a new user
+    post:
+      tags:
+        - user
+      summary: add a new user
+      description: adds a new user and returns it
+      # method that will add the new user
+      operationId: addUser
+      requestBody:
+        description: The data of the user to insert.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+
+            # the form of the user
+            example:
+              id: 0
+              email: mitroimarianavalentina@gmail.com
+              password:
+              userName: mariana
+              firstName: Mariana Valentina
+              lastName: Mitroi
+              country: Romania
+              DriverLicNo : 123456
+              status: ACTIVE
+      responses:
+        '200':
+          description: the created user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    # method to get all the users
     get:
       tags:
-        - sample
-      summary: get sample
-      description: returns a list of all the sample objects, without any filtering
-      operationId: getSamples
+        - user
+      summary: get all users
+      description: returns a list of all the users, without any filtering
+      # method taht will be triggered
+      operationId: getUsers
       responses:
         '200':
           description: success
@@ -30,13 +79,428 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SampleDTO'
+                  $ref: '#/components/schemas/UserDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '500':
           $ref: '#/components/responses/ServerError'
+
+  /user/{id}:
+    get:
+      tags:
+        - user
+      summary: get a user
+      description: returns the details for a user, based on id
+      operationId: getUser
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+
+    patch:
+      tags:
+        - user
+      summary: update an existing user
+      description: updates the name of an existing user and returns it
+      operationId: updateUser
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        description: The data of the user to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+            example:
+              id: 0
+              email: xxx@gmail.com
+              password:
+              userName: mariana
+              firstName: Mariana Valentina
+              lastName: Mitroi
+              country: Romania
+              DriverLicNo : 123456
+              status: ACTIVE
+      responses:
+        '200':
+          description: the created user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    delete:
+      tags:
+        - user
+      summary: removes a user
+      description: deletes a user identified by id
+      operationId: removeUser
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  #get all cars
+  /car:
+    # method to get all the cars
+    get:
+      tags:
+        - car
+      summary: get all cars
+      description: returns a list of all the cars, without any filtering
+      # method taht will be triggered
+      operationId: getCars
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CarDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    #add a new user
+    post:
+      tags:
+        - car
+      summary: add a new car
+      description: adds a new car and returns it
+      # method that will add the new car
+      operationId: addCar
+      requestBody:
+        description: The data of the car to insert.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarDTO'
+
+            # the form of the car
+            example:
+              id: 0
+              make: Mercedes
+              model: G Class
+              year: 2019
+              mileage: 2345
+              fuel: Diesel
+              carClass: SUV
+              status: ACTIVE
+      responses:
+        '200':
+          description: the created car
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /car/{id}:
+    get:
+      tags:
+        - car
+      summary: get a car
+      description: returns the details for a car, based on id
+      operationId: getCar
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    patch:
+      tags:
+        - car
+      summary: update an existing car
+      description: updates the name of an existing car and returns it
+      operationId: updateCar
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        description: The data of the car to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarDTO'
+            example:
+              id: 0
+              make: Mercedes
+              model: G Class
+              year: 2017
+              mileage: 2345
+              fuel: Diesel
+              carClass: SUV
+              status: ACTIVE
+      responses:
+        '200':
+          description: the created car
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    delete:
+      tags:
+        - car
+      summary: removes a car
+      description: deletes a car identified by id
+      operationId: removeCar
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+
+  /reservation:
+
+    #add a new reservation
+    post:
+      tags:
+        - reservation
+      summary: add a new reservation
+      description: adds a new reservation and returns it
+      # method that will add the new reservation
+      operationId: addReservation
+      requestBody:
+        description: The data of the reservation to insert.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationDTO'
+
+            # the form of the reservation
+            example:
+              id: 0
+              userId: 0
+              carId: 0
+              StartDate: 2020-11-01 10:00
+              FinishDate: 2020-11-11 10:00
+              status: ACTIVE
+      responses:
+        '200':
+          description: the created reservation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    # method to get all the reservations
+    get:
+      tags:
+        - reservation
+      summary: get all reservations
+      description: returns a list of all the reservations, without any filtering
+      # method taht will be triggered
+      operationId: getReservations
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReservationDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /reservation/{id}:
+    get:
+      tags:
+        - reservation
+      summary: get a reservation
+      description: returns the details for a reservation, based on id
+      operationId: getReservation
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+
+    patch:
+      tags:
+        - reservation
+      summary: update an existing reservation
+      description: updates the name of an existing reservation and returns it
+      operationId: updateReservation
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        description: The data of the reservation to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationDTO'
+            example:
+              id: 0
+              userId: 0
+              carId: 0
+              StartDate: 2020-11-01 10:00
+              FinishDate: 2020-11-11 10:00
+              status: ACTIVE
+      responses:
+        '200':
+          description: the created reservation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    delete:
+      tags:
+        - reservation
+      summary: removes a reservation
+      description: deletes a reservation identified by id
+      operationId: removeReservation
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+
 components:
   responses:
     Unauthorized:
@@ -72,14 +536,131 @@ components:
           type: string
         message:
           type: string
-    SampleDTO:
+    # User Component
+    UserDTO:
       type: object
+      required:
+        - id
+        - email
+        - password
+        - userName
+        - firstName
+        - lastName
+        - country
+        - DRiverLicNo
+        - status
       properties:
         id:
           type: integer
           format: int32
-          description: id of the sample
-        name:
+          description: id of the user
+        email:
           type: string
-          example: Sample name
-          description: full name of the sample
+          example: mitroimarianavalentina@gmail.com
+          description: the email address of the user
+        userName:
+          type: string
+          example: M_M_V
+          description: the user name of the user
+        firstName:
+          type: string
+          example: Mariana Valentina
+          description: first name of the user
+        lastName:
+          type: string
+          example: Mitroi
+          description: last name of the user
+        country:
+          type: string
+          example: Roamnia
+          description: country of residence of the user
+        DRiverLicNo:
+          type: integer
+          format: int32
+          example: 12346
+          description: diver's license of the user
+        status:
+          type: string
+          example: ACTIVE
+          description: status of the user - can be ACTIVE or DELETED
+
+    # Car Component
+    CarDTO:
+      type: object
+      required:
+        - id
+        - make
+        - model
+        - year
+        - mileage
+        - fuel
+        - status
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: id of the car
+        make:
+          type: string
+          example: Mercedes
+          description: the make of the car
+        model:
+          type: string
+          example: G Class
+          description: the car's model
+        year:
+          type: integer
+          format: int32
+          description: the year of the car
+          example: 2019
+        mileage:
+          type: integer
+          format: int32
+          description: the mileage of the car
+          example: 3124
+        fuel:
+          type: string
+          example: Diesel
+          description: the fuel of the car
+        status:
+          type: string
+          example: ACTIVE
+          description: status of the user - can be ACTIVE or DELETED
+
+    # Reservation Component
+    ReservationDTO:
+      type: object
+      required:
+        - id
+        - userId
+        - carId
+        - StartDate
+        - FinishDate
+        - status
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: id of the car
+        userId:
+          type: integer
+          format: int32
+          description: the user's id thet will rent the car
+          example: 0
+        carId:
+          type: integer
+          format: int32
+          description: the car's id, that will be rented
+          example: 0
+        StartDate:
+          type: object
+          example: 2020-11-01 10:00
+          description: when is the car rented
+        FinishDate:
+          type: object
+          example: 2020-11-11 10:00
+          description: when is the car rented brought back
+        status:
+          type: string
+          example: ACTIVE
+          description: status of the user - can be ACTIVE or DELETED

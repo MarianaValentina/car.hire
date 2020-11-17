@@ -21,13 +21,13 @@ tags:
 paths:
   #get all users
   /user:
-
     #add a new user
     post:
       tags:
         - user
       summary: add a new user
       description: adds a new user and returns it
+
       # method that will add the new user
       operationId: addUser
       requestBody:
@@ -49,6 +49,7 @@ paths:
               country: Romania
               DriverLicNo : 123456
               status: ACTIVE
+
       responses:
         '200':
           description: the created user
@@ -69,7 +70,8 @@ paths:
         - user
       summary: get all users
       description: returns a list of all the users, without any filtering
-      # method taht will be triggered
+
+      # method that will be triggered
       operationId: getUsers
       responses:
         '200':
@@ -87,11 +89,13 @@ paths:
         '500':
           $ref: '#/components/responses/ServerError'
 
+  # user with the given id
   /user/{id}:
+    # get the user
     get:
       tags:
         - user
-      summary: get a user
+      summary: get the user with the given id
       description: returns the details for a user, based on id
       operationId: getUser
       parameters:
@@ -115,7 +119,7 @@ paths:
         '500':
           $ref: '#/components/responses/ServerError'
 
-
+    # update the user
     patch:
       tags:
         - user
@@ -136,6 +140,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserDTO'
+
             example:
               id: 0
               email: xxx@gmail.com
@@ -146,9 +151,10 @@ paths:
               country: Romania
               DriverLicNo : 123456
               status: ACTIVE
+
       responses:
         '200':
-          description: the created user
+          description: the updated user
           content:
             application/json:
               schema:
@@ -160,6 +166,7 @@ paths:
         '500':
           $ref: '#/components/responses/ServerError'
 
+    # delete the user
     delete:
       tags:
         - user
@@ -191,7 +198,7 @@ paths:
         - car
       summary: get all cars
       description: returns a list of all the cars, without any filtering
-      # method taht will be triggered
+      # method that will be triggered
       operationId: getCars
       responses:
         '200':
@@ -209,7 +216,7 @@ paths:
         '500':
           $ref: '#/components/responses/ServerError'
 
-    #add a new user
+    #add a new car
     post:
       tags:
         - car
@@ -235,6 +242,7 @@ paths:
               fuel: Diesel
               carClass: SUV
               status: ACTIVE
+
       responses:
         '200':
           description: the created car
@@ -249,7 +257,9 @@ paths:
         '500':
           $ref: '#/components/responses/ServerError'
 
+  # cars based on a given id
   /car/{id}:
+    # get a car
     get:
       tags:
         - car
@@ -276,11 +286,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '500':
           $ref: '#/components/responses/ServerError'
+
+    # update a car
     patch:
       tags:
         - car
       summary: update an existing car
-      description: updates the name of an existing car and returns it
+      description: updates an existing car and returns it
       operationId: updateCar
       parameters:
         - in: path
@@ -296,6 +308,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CarDTO'
+
             example:
               id: 0
               make: Mercedes
@@ -305,9 +318,10 @@ paths:
               fuel: Diesel
               carClass: SUV
               status: ACTIVE
+
       responses:
         '200':
-          description: the created car
+          description: the updated car
           content:
             application/json:
               schema:
@@ -319,6 +333,7 @@ paths:
         '500':
           $ref: '#/components/responses/ServerError'
 
+    # delete a car
     delete:
       tags:
         - car
@@ -342,9 +357,8 @@ paths:
         '500':
           $ref: '#/components/responses/ServerError'
 
-
+  # all the reservation made
   /reservation:
-
     #add a new reservation
     post:
       tags:
@@ -369,6 +383,7 @@ paths:
               StartDate: 2020-11-01 10:00
               FinishDate: 2020-11-11 10:00
               status: ACTIVE
+
       responses:
         '200':
           description: the created reservation
@@ -383,13 +398,14 @@ paths:
         '500':
           $ref: '#/components/responses/ServerError'
 
-    # method to get all the reservations
+    # get all the reservations
     get:
       tags:
         - reservation
       summary: get all reservations
       description: returns a list of all the reservations, without any filtering
-      # method taht will be triggered
+
+      # method that will be triggered
       operationId: getReservations
       responses:
         '200':
@@ -407,7 +423,9 @@ paths:
         '500':
           $ref: '#/components/responses/ServerError'
 
+  # reservation based on a given d
   /reservation/{id}:
+    # get the reservation
     get:
       tags:
         - reservation
@@ -435,12 +453,12 @@ paths:
         '500':
           $ref: '#/components/responses/ServerError'
 
-
+    # update an existing reservation
     patch:
       tags:
         - reservation
       summary: update an existing reservation
-      description: updates the name of an existing reservation and returns it
+      description: updates an existing reservation and returns it
       operationId: updateReservation
       parameters:
         - in: path
@@ -456,6 +474,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ReservationDTO'
+
             example:
               id: 0
               userId: 0
@@ -463,9 +482,10 @@ paths:
               StartDate: 2020-11-01 10:00
               FinishDate: 2020-11-11 10:00
               status: ACTIVE
+
       responses:
         '200':
-          description: the created reservation
+          description: the updated reservation
           content:
             application/json:
               schema:
@@ -477,6 +497,7 @@ paths:
         '500':
           $ref: '#/components/responses/ServerError'
 
+    # delete a reservation
     delete:
       tags:
         - reservation
@@ -536,9 +557,11 @@ components:
           type: string
         message:
           type: string
+
     # User Component
     UserDTO:
       type: object
+
       required:
         - id
         - email
@@ -587,6 +610,7 @@ components:
     # Car Component
     CarDTO:
       type: object
+
       required:
         - id
         - make
@@ -625,11 +649,12 @@ components:
         status:
           type: string
           example: ACTIVE
-          description: status of the user - can be ACTIVE or DELETED
+          description: status of the car - can be ACTIVE or DELETED
 
     # Reservation Component
     ReservationDTO:
       type: object
+
       required:
         - id
         - userId
@@ -641,11 +666,11 @@ components:
         id:
           type: integer
           format: int32
-          description: id of the car
+          description: id of the reservation
         userId:
           type: integer
           format: int32
-          description: the user's id thet will rent the car
+          description: the user's id that will rent the car
           example: 0
         carId:
           type: integer
@@ -663,4 +688,4 @@ components:
         status:
           type: string
           example: ACTIVE
-          description: status of the user - can be ACTIVE or DELETED
+          description: status of the reservation - can be ACTIVE or DELETED
